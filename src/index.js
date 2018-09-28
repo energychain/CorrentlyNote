@@ -10,7 +10,7 @@ module.exports = function() {
   const ERC20ABI = require('./ERC20ABI.json');
   const CORI_ADDRESS = '0x725b190bc077ffde17cf549aa8ba25e298550b18';
   const ethers = require('ethers');
-  const provider = ethers.providers.getDefaultProvider();
+  const provider = ethers.getDefaultProvider();
 
   const _calculateEnergy = function(receipt) {
     if (typeof receipt.energy !== 'undefined') {
