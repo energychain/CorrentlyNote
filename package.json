@@ -28,7 +28,7 @@
 		"pretest": "eslint --ignore-path .gitignore ."
 	},
 	"dependencies": {
-		"ethers": "^3.0.29"
+		"ethers": "^4.0.0"
 	},
 	"devDependencies": {
 		"coveralls": "^3.0.2",

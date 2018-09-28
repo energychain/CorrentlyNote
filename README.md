@@ -1,5 +1,5 @@
 # CorrentlyNote
-[![npm version](https://badge.fury.io/js/correntlynote.svg)](https://badge.fury.io/js/correntlynote)
+[![npm version](https://badge.fury.io/js/correntlynote.svg)](https://badge.fury.io/js/correntlynote) [![Greenkeeper badge](https://badges.greenkeeper.io/energychain/CorrentlyNote.svg)](https://greenkeeper.io/)
 
 Framework to work with Corrently Invest Tokens (CORI) in a similar way as with notes. Having CORI Tokens hold renewable generation capacity as a bound value and actual production over time as a derived (secondary) substition.
 
