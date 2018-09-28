@@ -1,0 +1,6 @@
+cmd: npm test
+targets:
+  PreTest:
+      cmd: "npm run pretest"
+  TestSuite:
+      cmd: "npm run test"      
