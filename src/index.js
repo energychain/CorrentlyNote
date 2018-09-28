@@ -115,6 +115,9 @@ module.exports = function() {
     });
   };
 
+  /**
+  Get a ChequAccount with all required Blockchain based information
+  */
   const noteByAccount = function(account) {
     return new Promise(function(resolve, reject) {
       let res = {};
@@ -134,7 +137,35 @@ module.exports = function() {
     });
   };
 
+  /**
+  Create a new Check Account and return its private Key.
+  Deposit will be the account belongig to given privateKey
+  */
+  const fileNote = function(privateKey, depostAmountCori) {
+    return new Promise(function(resolve, reject) {
+      if (depostAmountCori < 1) reject(new Error('Unable to send ' + depostAmountCori));
+      let res = {};
+      const wallet = new ethers.Wallet(privateKey, ethers.providers.getDefaultProvider('homestead'));
+      res.account = wallet.address;
+      const noteWallet = ethers.Wallet.createRandom();
+      res.noteAccount = noteWallet.address;
+      res.notePrivateKey = noteWallet.privateKey;
+
+      let cori_contract = new ethers.Contract(CORI_ADDRESS, ERC20ABI, wallet);
+      _balanceOf(res).then(function(res) {
+        if (res.balance < depostAmountCori) {
+          reject(new Error('Sender does not have enough Cori to send'));
+        }
+        cori_contract.transfer(res.noteAccount, depostAmountCori).then(function(sxHash) {
+          res.txHash = sxHash;
+          resolve(res);
+        }).catch(function(err) { reject(err); });
+      });
+    });
+  };
+
   return {
     getNoteByAccount: noteByAccount,
+    fileNote: fileNote,
   };
 };

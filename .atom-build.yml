@@ -3,4 +3,8 @@ targets:
   PreTest:
       cmd: "npm run pretest"
   TestSuite:
-      cmd: "npm run test"      
+      cmd: "npm run test"
+  ContinuesTest:
+      cmd: "mocha -w tests/index.js"
+  Publsh:
+      cmd: "npm test && npm run dist && npm publish"

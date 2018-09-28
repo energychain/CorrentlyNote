@@ -1,6 +1,6 @@
 {
 	"name": "correntlynote",
-	"version": "0.1.4",
+	"version": "0.1.5",
 	"description": "Framework to work with Corrently Invest Tokens (CORI) in a similar way as with notes. Having CORI Tokens hold renewable generation capacity as a bound value and actual production over time as a derived (secondary) substition.",
 	"keywords": [
 		"energy",
@@ -25,7 +25,8 @@
 	},
 	"scripts": {
 		"test": "./node_modules/.bin/mocha --reporter spec tests/index.js",
-		"pretest": "eslint --ignore-path .gitignore ."
+		"pretest": "eslint --ignore-path .gitignore src/",
+		"dist": "browserify src/index.js -o dist/correntlynote.js"
 	},
 	"dependencies": {
 		"ethers": "^4.0.0"
