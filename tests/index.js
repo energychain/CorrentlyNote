@@ -1,5 +1,5 @@
 'use strict';
-const CorrentlyNote = require('../lib/index.js');
+const CorrentlyNote = require('../src/index.js');
 const assert = require('assert');
 const note = new CorrentlyNote();
 const valid_account = '0xD6B2851C9aCD1E8d70bE59d44315a03ebaec7DAb';

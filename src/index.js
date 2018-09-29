@@ -6,7 +6,7 @@
 */
 const ethers = require('ethers');
 
-export function correntlynote() {
+module.exports = function() {
   const ERC20ABI = require('./ERC20ABI.json');
   const CORI_ADDRESS = '0x725b190bc077ffde17cf549aa8ba25e298550b18';
 
@@ -164,8 +164,13 @@ export function correntlynote() {
     });
   };
 
+  const init = function() {
+
+  };
+
   return {
     getNoteByAccount: noteByAccount,
     fileNote: fileNote,
+    init: init,
   };
 };
