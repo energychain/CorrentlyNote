@@ -145,7 +145,7 @@ module.exports = function() {
     return new Promise(function(resolve, reject) {
       if (depostAmountCori < 1) reject(new Error('Unable to send ' + depostAmountCori));
       let res = {};
-      const wallet = new ethers.Wallet(privateKey, ethers.providers.getDefaultProvider('homestead'));
+      const wallet = new ethers.Wallet(privateKey, ethers.getDefaultProvider('homestead'));
       res.account = wallet.address;
       const noteWallet = ethers.Wallet.createRandom();
       res.noteAccount = noteWallet.address;
