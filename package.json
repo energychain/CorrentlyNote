@@ -26,12 +26,14 @@
 	"scripts": {
 		"test": "./node_modules/.bin/mocha --reporter spec tests/index.js",
 		"pretest": "eslint --ignore-path .gitignore src/",
-		"dist": "browserify src/index.js -o dist/correntlynote.js"
+		"dist": "browserify src/index.js -o dist/correntlynote.js",
+		"cbuild": "cbuild"
 	},
 	"dependencies": {
 		"ethers": "^4.0.0"
 	},
 	"devDependencies": {
+		"cbuild": "^0.1.8",
 		"coveralls": "^3.0.2",
 		"eslint": "^5.6.0",
 		"eslint-config-strongloop": "^2.1.0",
