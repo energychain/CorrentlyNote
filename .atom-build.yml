@@ -7,4 +7,4 @@ targets:
   ContinuesTest:
       cmd: "mocha -w tests/index.js"
   Publsh:
-      cmd: "npm test && npm run cbuild -- -o dist/correntlynote.js && npm publish"
+      cmd: "npm test && npm run cbuild -- -o dist/js/main.js && npm publish"

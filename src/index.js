@@ -1,15 +1,15 @@
-'use strict';
 /**
   Framework to work with Corrently Invest Tokens (CORI) in a similar way as
   with notes. Having CORI Tokens hold renewable generation capacity as a
   bound value and actual production over time as a derived (secondary)
   substition. Further reading: https://corrently.com/
 */
+const ethers = require('ethers');
 
-module.exports = function() {
+export function correntlynote() {
   const ERC20ABI = require('./ERC20ABI.json');
   const CORI_ADDRESS = '0x725b190bc077ffde17cf549aa8ba25e298550b18';
-  const ethers = require('ethers');
+
   const provider = ethers.getDefaultProvider();
 
   const _calculateEnergy = function(receipt) {
