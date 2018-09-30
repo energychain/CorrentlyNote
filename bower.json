@@ -1,0 +1,27 @@
+{
+  "name": "correntlynote",
+  "description": "Framework to work with Corrently Invest Tokens (CORI) in a similar way as with notes. Having CORI Tokens hold renewable generation capacity as a bound value and actual production over time as a derived (secondary) substition.",
+  "main": "src/correntlynote.js",
+  "authors": [
+    "Corrently Corp <contact@corrently.com>"
+  ],
+  "license": "Apache-2.0",
+  "keywords": [
+    "energy",
+    "blockchain",
+    "corrently",
+    "stromdao",
+    "capacitytoken",
+    "cori",
+    "framework",
+    "exchange"
+  ],
+  "homepage": "https://github.com/energychain/CorrentlyNote",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

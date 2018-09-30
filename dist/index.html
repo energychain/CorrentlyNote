@@ -14,23 +14,38 @@
 
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/main.css">
+  <style>
+  body {
+    margin-left:10%;
+    margin-right:10%;
+  }
+  </style>
 </head>
 
 <body>
-  <!--[if lte IE 9]>
-    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
-  <![endif]-->
-
-  <!-- Add your site or application content here -->
-  <p>Thanks for using.</p>
-
+  <h1>CorrentlyNote - Example Use-Cases</h1>
+  <p>The business case of this framework is to make it easier to transfer digital value bound to an asset in the context of a Corrently based ecosystem. CorrentlyNote could be compared to the mimics of a cheque, where one entity bounds a value in order to transfer to another entity. The receiving entity may not be known by the time the cheque (note) gets signed.</p>
+  <h2>Use Case: Validate a Note (cheque)</h2>
+  <label for="chequeAccount">Cheque Account to validate:</label><br/>
+  <input type="text" id="chequeAccount" placeholder="0x..." value="0xD6B2851C9aCD1E8d70bE59d44315a03ebaec7DAb" style="width:100%">
+  <button id="validate" type="submit">Validate</button>
+  <div id="validateResultObj"></div>
   <script src="js/vendor/modernizr-3.6.0.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
   <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
   <script src="js/plugins.js"></script>
-  <script src="js/vendor/s.min.js"></script>
+  <script src="js/vendor/system.min.js"></script>
+  <script src="js/main.js"></script>
   <script>
-   System.import('//unpkg.com/correntlynote');
+    $('#chequeAccount').on('keyup',function() {  $('#validateResultObj').html(""); if($('#chequeAccount').val().length!=42) {$('#validate').attr('disabled','disabled');} else {$('#validate').removeAttr('disabled');}});
+    $('#validate').click(function() {
+      $('#validate').attr('disabled','disabled');
+      window.CorrentlyNote.getNoteByAccount($('#chequeAccount').val()).then(function(receipt) {
+        $('#validate').removeAttr('disabled');
+        const formatter=new window.JSONFormatter(receipt);
+        $('#validateResultObj').html(formatter.render());
+      });
+    });
   </script>
 </body>
 

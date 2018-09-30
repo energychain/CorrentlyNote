@@ -1,3 +1,4 @@
-const CorrentlyNote = require('./index.js');
-let correntlynote = new CorrentlyNote();
-correntlynote.init();
+import CorrentlyNote from './index.js';
+import JSONFormatter from 'json-formatter-js';
+global.JSONFormatter = JSONFormatter;
+global.CorrentlyNote = new CorrentlyNote();

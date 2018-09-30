@@ -6,5 +6,7 @@ targets:
       cmd: "npm run test"
   ContinuesTest:
       cmd: "mocha -w tests/index.js"
+  Build:
+      cmd: "npm run dist"
   Publsh:
-      cmd: "npm test && npm run cbuild -- -o dist/js/main.js && npm publish"
+      cmd: "npm test && npm run dist && npm publish"

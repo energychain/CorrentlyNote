@@ -6,24 +6,33 @@
 */
 const ethers = require('ethers');
 
-module.exports = function() {
+function CorrentlyNote() {
   const ERC20ABI = require('./ERC20ABI.json');
   const CORI_ADDRESS = '0x725b190bc077ffde17cf549aa8ba25e298550b18';
-
   const provider = ethers.getDefaultProvider();
 
   const _calculateEnergy = function(receipt) {
-    if (typeof receipt.energy !== 'undefined') {
+    if (typeof receipt.logs[0].energy !== 'undefined') {
       throw new Error('Receipt already has energy set');
     };
-    if (typeof receipt.timeStamp === 'undefined') {
+    if (typeof receipt.logs[0].timeStamp === 'undefined') {
       throw new Error('No Timestamp to calulate energy');
     };
     if (typeof receipt.balance === 'undefined') {
       throw new Error('No CORI Balance to calulate energy');
     };
+    let totalEnergy = 0;
+    let totalCori = 0;
     const d = new Date().getTime();
-    receipt.energy = ((d - receipt.timeStamp) / (86400000 * 365)) * receipt.balance;
+    for (let i = 0; i < receipt.logs.length; i++) {
+      receipt.logs[i].energy = ((d - receipt.logs[0].timeStamp) / (8640000000 * 365)) * receipt.logs[i].ccori;
+      totalEnergy += receipt.logs[i].energy;
+      totalCori += receipt.logs[i].ccori;
+    }
+    if (totalCori !== receipt.balance) {
+      throw new Error('Balance inconsitency detected');
+    }
+    receipt.energy = totalEnergy;
     return receipt;
   };
 
@@ -76,10 +85,7 @@ module.exports = function() {
           '0x000000000000000000000000' + receipt.account.substr(2),
         ],
       }).then(function(logs) {
-        receipt.removed = logs[0].removed;
-        receipt.txHash = logs[0].transactionHash;
-        receipt.blockHash = logs[0].blockHash;
-        receipt.event_cnt = logs.length;
+        receipt.logs = logs;
         resolve(receipt);
       });
     });
@@ -87,31 +93,66 @@ module.exports = function() {
 
   const _txReceipt = function(receipt) {
     return new Promise(function(resolve, reject) {
-      if (typeof receipt.txHash === 'undefined') {
+      if (typeof receipt.logs[0].transactionHash === 'undefined') {
         reject(new Error('Transaction Hash needs to be defined'));
       };
-      if (typeof receipt.txReceipt !== 'undefined') {
+      if (typeof receipt.logs[0].txReceipt !== 'undefined') {
         reject(new Error('Transaction Receipt already set'));
       };
-      provider.getTransactionReceipt(receipt.txHash).then(function(txreceipt) {
-        receipt.txReceipt = txreceipt;
-        resolve(receipt);
-      });
+
+      const retrieve = function(txhash) {
+        return new Promise(function(resolve2, reject2) {
+          provider.getTransactionReceipt(txhash).then(function(txreceipt) {
+            resolve2(txreceipt);
+          });
+        });
+      };
+
+      const itterate = function(i) {
+        if (i < receipt.logs.length) {
+          retrieve(receipt.logs[i].transactionHash).then(function(txreceipt) {
+            receipt.logs[i].ccori = ethers.utils.bigNumberify(receipt.logs[i].data).toNumber();
+            receipt.logs[i].txReceipt = txreceipt;
+            i++;
+            itterate(i);
+          });
+        } else {
+          resolve(receipt);
+        }
+      };
+      itterate(0);
     });
   };
 
   const _blockTime = function(receipt) {
     return new Promise(function(resolve, reject) {
-      if (typeof receipt.blockHash === 'undefined') {
+      if (typeof receipt.logs[0].blockHash === 'undefined') {
         reject(new Error('BlockHash needs to be defined'));
       };
-      if (typeof receipt.timeStamp !== 'undefined') {
+      if (typeof receipt.logs[0].timeStamp !== 'undefined') {
         reject(new Error('TimeStamp Receipt already set'));
       };
-      provider.getBlock(receipt.blockHash).then(function(block) {
-        receipt.timeStamp = block.timestamp * 1000;
-        resolve(receipt);
-      });
+
+      const retrieve = function(blockHash) {
+        return new Promise(function(resolve2, reject2) {
+          provider.getBlock(blockHash).then(function(block) {
+            resolve2(block.timestamp * 1000);
+          });
+        });
+      };
+
+      const itterate = function(i) {
+        if (i < receipt.logs.length) {
+          retrieve(receipt.logs[i].txReceipt.blockHash).then(function(timeStamp) {
+            receipt.logs[i].timeStamp = timeStamp;
+            i++;
+            itterate(i);
+          });
+        } else {
+          resolve(receipt);
+        }
+      };
+      itterate(0);
     });
   };
 
@@ -165,7 +206,6 @@ module.exports = function() {
   };
 
   const init = function() {
-
   };
 
   return {
@@ -174,3 +214,4 @@ module.exports = function() {
     init: init,
   };
 };
+export default CorrentlyNote;
